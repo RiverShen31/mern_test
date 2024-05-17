@@ -1,0 +1,42 @@
+version: "3.8"
+services:
+  mongo:
+    image: mongo
+    container_name: mongo
+    volumes:
+      - mongo-data:/data/db
+    ports:
+      - "27017:27017"
+  
+  api:
+    build: ./api
+    # image: 31052003/mern_api:0.0.2.RELEASE
+    container_name: api_c
+    ports:
+      - "4000:4000"
+    depends_on:
+      - mongo
+    volumes:
+      - ./api:/app
+      - /app/node_modules
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/mydb
+  
+  client:
+    build: ./client
+    # image: 31052003/mern_client:0.0.2.RELEASE
+    container_name: client_c
+    ports:
+      - "3000:3000"
+    stdin_open: true
+    tty: true
+    depends_on:
+      - api
+    volumes:
+      - ./client:/app
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - REACT_APP_API_URL=http://localhost:4000/api/notes
+
+volumes:
+  mongo-data:
