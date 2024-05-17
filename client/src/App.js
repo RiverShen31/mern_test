@@ -1,23 +1,33 @@
-import logo from './logo.svg';
 import './App.css';
+import {useEffect, useState} from 'react';
+import axios from 'axios';
 
 function App() {
+  const [note, setNotes] = useState(null);
+  useEffect(() => {
+    axios
+    .get(process.env.REACT_APP_API_URL)
+    .then((res) => {
+      console.log(res?.data?.data)
+      setNotes(res?.data?.data);
+    });
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='App'>
+      <h1>Notes</h1>
+      {note ? (
+        <ul>
+          {note?.map((note, index) => (
+            <li key={index}>
+              <h2>{note.title}</h2>
+              <p>{note.content}</p>
+            </li>
+          ))}
+        </ul>
+      ): (
+        <p>Loading...</p>
+      )}
     </div>
   );
 }
