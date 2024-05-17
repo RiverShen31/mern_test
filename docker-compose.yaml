@@ -11,7 +11,7 @@ services:
   api:
     build: ./api
     # image: 31052003/mern_api:0.0.2.RELEASE
-    container_name: api_c
+    container_name: api_c1
     ports:
       - "4000:4000"
     depends_on:
@@ -25,7 +25,7 @@ services:
   client:
     build: ./client
     # image: 31052003/mern_client:0.0.2.RELEASE
-    container_name: client_c
+    container_name: client_c1
     ports:
       - "3000:3000"
     stdin_open: true
